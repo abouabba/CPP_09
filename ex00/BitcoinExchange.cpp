@@ -47,3 +47,8 @@ double BitcoinExchange::getRate(const std::string &data) {
     std::cout << it->first<< "  =>> "<< it->second << std::endl;
     return it->second;
 }
+
+void BitcoinExchange::processInput(const std::string& filename) {
+    std::ifstream file(filename);
+    ///
+}

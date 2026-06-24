@@ -16,5 +16,5 @@ int main(int ac, char **av)
     std::cout << btc.getRate("2011-01-03") << std::endl;
     std::cout << btc.getRate("2011-01-07") << std::endl;
     std::cout << btc.getRate("2012-01-11") << std::endl;
-    // btc.processInput(av[1]);
+    btc.processInput(av[1]);
 }
