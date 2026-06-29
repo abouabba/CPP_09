@@ -1,5 +1,17 @@
 # include "BitcoinExchange.hpp"
 
+
+std::string trim(const std::string& str)
+{
+    size_t start = str.find_first_not_of(" \t");
+    size_t end = str.find_last_not_of(" \t");
+
+    if (start == std::string::npos)
+        return "";
+
+    return str.substr(start, end - start + 1);
+}
+
 void BitcoinExchange::loadDatabase() {
 
     std::ifstream file("../data.csv");
@@ -58,6 +70,35 @@ void BitcoinExchange::processInput(const std::string& filename) {
     getline(file, line);
 
     while(getline(file, line)) {
-        std::cout << line << std::endl;
+
+        size_t pos = line.find('|');
+        if (pos == std::string::npos) {
+            std::cerr << "Error: bad input => " << line << std::endl;
+            continue;
+        }
+        std::string data = line.substr(0, pos);
+        std::string value = line.substr(pos + 1);
+    
+        data = trim(data);
+        value = trim(value);
+    
+        std::stringstream ss(value);
+    
+        double amount = 0;
+        ss >> amount;
+    
+    
+        std::cout << data << "  -->  " << value << std::endl;
+        std::cout <<"  ------------>  " << amount << std::endl;
+    
+        if (amount < 0) {
+            std::cerr << "Error: not a positive number." << std::endl;
+            continue;
+        }
+    
+        if (amount > 1000) {
+            std::cerr << "Error: too large a number." << std::endl;
+            continue;
+        }
     }
 }
