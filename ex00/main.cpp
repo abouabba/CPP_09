@@ -9,12 +9,14 @@ int main(int ac, char **av)
         std::cerr << "Error: could not open file." << std::endl;
         return (1);
     }
+    try {
 
-    BitcoinExchange btc;
+        BitcoinExchange btc;
+    
+        btc.loadDatabase();
+        btc.processInput(av[1]);
 
-    btc.loadDatabase();
-    std::cout << btc.getRate("2001-42-42") << std::endl;
-    std::cout << btc.getRate("2011-01-07") << std::endl;
-    std::cout << btc.getRate("2012-01-11") << std::endl;
-    btc.processInput(av[1]);
+    } catch (const std::runtime_error &e) {
+        std::cout << e.what() << std::endl;
+    }
 }
