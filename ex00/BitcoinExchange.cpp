@@ -54,17 +54,29 @@ bool BitcoinExchange::isValidDate(const std::string& date) {
         return false;
     if (date[4] != '-' || date[7] != '-')
         return false;
-    for (size_t i = 0; i < date.size(); i++) {
+    for (size_t i = 0; i < date.length(); i++) {
         if (i == 4 || i == 7)
             continue;
         if (!std::isdigit(date[i]))
             return false;
     }
     int year = std::atoi(date.substr(0, 4).c_str());
-    int month = std::atoi(date.substr(5, 7).c_str());
-    int day = std::atoi(date.substr(7).c_str());
+    int month = std::atoi(date.substr(5, 2).c_str());
+    int day = std::atoi(date.substr(8, 2).c_str());
     std::cout << year << "-" << month << "-" << day << std::endl;
     
+    if (month < 1 || month > 12)
+        return false;
+    int daysInMonth[12] = {
+        31, 28, 31, 30,
+        31, 30, 31, 31,
+        30, 31, 30, 31
+    };
+    bool leap = (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
+    if (leap)
+        daysInMonth[1] = 29;
+    if (day < 1 || day > daysInMonth[month - 1])
+        return false;
     return true;
 }
 
