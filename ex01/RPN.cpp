@@ -41,8 +41,7 @@ void RPN::calculate(const std::string &expression) {
                 result = b - a;
             else if (token == "*")
                 result = b * a;
-            else
-            {
+            else {
                 if (a == 0)
                     throw std::runtime_error("Error");
         

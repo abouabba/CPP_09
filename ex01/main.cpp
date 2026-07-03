@@ -5,12 +5,10 @@ int main(int ac, char **av) {
         std::cerr << "Error" << std::endl;
         return -1;
     }
-    (void)av;
     RPN rpn;
 
     try {
-        rpn.calculate("3 4 +");
-        rpn.calculate("3");
+        rpn.calculate(av[1]);
     } catch (const std::runtime_error &e) {
         std::cerr << e.what() << std::endl;
     }
