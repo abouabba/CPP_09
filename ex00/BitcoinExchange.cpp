@@ -1,5 +1,14 @@
 # include "BitcoinExchange.hpp"
 
+BitcoinExchange::BitcoinExchange() {}
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) : database(other.database) {}
+BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other) {
+    if (this != &other) {
+        database = other.database;
+    }
+    return *this;
+}
+BitcoinExchange::~BitcoinExchange() {}
 
 std::string trim(const std::string& str) {
     size_t start = str.find_first_not_of(" \t");
