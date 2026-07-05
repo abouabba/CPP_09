@@ -32,6 +32,7 @@ void RPN::calculate(const std::string &expression) {
             stk.pop();
             int b = stk.top();
             stk.pop();
+
         
             int result;
         
@@ -47,7 +48,8 @@ void RPN::calculate(const std::string &expression) {
         
                 result = b / a;
             }
-        
+            if (result > INT_MAX || result < INT_MIN)
+                throw std::runtime_error("Error");
             stk.push(result);
         }
         else
