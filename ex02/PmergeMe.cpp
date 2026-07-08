@@ -89,14 +89,14 @@ std::vector<std::pair<int, int> > &pairs) {
 
 void PmergeMe::buildChains(const std::vector<std::pair<int,int> > &pairs,
 std::vector<int> &mainChain,
-std::vector<int> &pend) {
+std::vector<std::pair<int, int> > &pend) {
     if (pairs.empty())
         return ;
     mainChain.push_back(pairs[0].first);
     mainChain.push_back(pairs[0].second);
     for(size_t i = 1; i < pairs.size(); i++) {
         mainChain.push_back(pairs[i].second);
-        pend.push_back(pairs[i].first);
+        pend.push_back(pairs[i]);
     }
 }
 
@@ -139,7 +139,15 @@ void PmergeMe::binaryInsert(std::vector<int> &mainChain, int value) {
     mainChain.insert(it, value);
 }
 
-void PmergeMe::sortVector() {
+void PmergeMe::binaryInsert(std::vector<int> &mainChain, int value, int limit) {
+    
+    std::vector<int>::iterator limitIt = std::find(mainChain.begin(), mainChain.end(), limit);
+    std::vector<int>::iterator it;
+    it = std::lower_bound(mainChain.begin(), limitIt + 1, value);
+    mainChain.insert(it, value);
+}
+
+std::vector<int> PmergeMe::sortVector() {
     bool hasStraggler = false;
     int straggler = 0;
     std::vector<std::pair<int, int> > pairs;
@@ -147,19 +155,22 @@ void PmergeMe::sortVector() {
     sortEachPair(pairs);
     sortPairs(pairs);
     std::vector<int> mainChain;
-    std::vector<int> pend;
+    std::vector<std::pair<int, int> > pend;
     buildChains(pairs, mainChain, pend);
     size_t max = pend.size();
     std::vector<size_t> order = buildInsertionOrder(max);
     for (size_t i = 0; i < order.size(); i++) {
-        binaryInsert(mainChain, pend[order[i]]);
+        binaryInsert(mainChain, pend[order[i]].first, pend[order[i]].second);
     }
     if (hasStraggler)
         binaryInsert(mainChain, straggler);
-    for (size_t i = 0; i < mainChain.size(); i++)
-    {
-        std::cout << "--> "<< mainChain[i] << std::endl;
-    }
+    return mainChain;
+}
+
+void PmergeMe::printOriginal() {
+    for (size_t i = 0; i < vec.size(); i++)
+        std::cout << vec[i] << " ";
+    std::cout << std::endl;
 }
 
         /*algorithm for deque*/
@@ -170,13 +181,13 @@ PmergeMe::makePairsforDeque(bool &hasStraggler, int &straggler) {
 
     hasStraggler = false;
 
-    for (size_t i = 0; i + 1 < vec.size(); i += 2)
-        pairs.push_back(std::make_pair(vec[i], vec[i + 1]));
+    for (size_t i = 0; i + 1 < deq.size(); i += 2)
+        pairs.push_back(std::make_pair(deq[i], deq[i + 1]));
 
-    if (vec.size() % 2)
+    if (deq.size() % 2)
     {
         hasStraggler = true;
-        straggler = vec.back();
+        straggler = deq.back();
     }
 
     return pairs;
@@ -223,53 +234,29 @@ std::deque<std::pair<int, int> > &pairs) {
 
 void PmergeMe::buildChains(const std::deque<std::pair<int,int> > &pairs,
 std::deque<int> &mainChain,
-std::deque<int> &pend) {
+std::deque<std::pair<int, int> > &pend) {
     if (pairs.empty())
         return ;
     mainChain.push_back(pairs[0].first);
     mainChain.push_back(pairs[0].second);
     for(size_t i = 1; i < pairs.size(); i++) {
         mainChain.push_back(pairs[i].second);
-        pend.push_back(pairs[i].first);
+        pend.push_back(pairs[i]);
     }
 }
 
-std::deque<size_t> PmergeMe::jacobsthalNumbers_forDeque(size_t max) {
-    std::deque<size_t> jacob;
-    jacob.push_back(0);
-    jacob.push_back(1);
-    while (jacob.back() < max) {
-        size_t n = jacob[jacob.size() - 1] + 2 * jacob[jacob.size() - 2];
-        jacob.push_back(n);
-    }
-    return jacob;
-}
-
-std::deque<size_t> PmergeMe::buildInsertionOrder_forDeque(size_t pendSize) {
-    std::deque<size_t> order;
-    if (pendSize == 0)
-        return order;
-    std::deque<size_t> jacob = jacobsthalNumbers_forDeque(pendSize);
-
-    order.push_back(0);
-    size_t previous = 1;
-    for (size_t i = 1; i < jacob.size(); i++) {
-        size_t current = jacob[i];
-        if (current > pendSize)
-            current = pendSize;
-        if (current == previous)
-            continue;
-        for (size_t j = current; j > previous; --j) {
-            order.push_back(j - 1);
-        }
-        previous = current;
-    }
-    return order;
-}
 
 void PmergeMe::binaryInsert(std::deque<int> &mainChain, int value) {
     std::deque<int>::iterator it;
     it = std::lower_bound(mainChain.begin(), mainChain.end(), value);
+    mainChain.insert(it, value);
+}
+
+void PmergeMe::binaryInsert(std::deque<int> &mainChain, int value, int limit) {
+    
+    std::deque<int>::iterator limitIt = std::find(mainChain.begin(), mainChain.end(), limit);
+    std::deque<int>::iterator it;
+    it = std::lower_bound(mainChain.begin(), limitIt + 1, value);
     mainChain.insert(it, value);
 }
 
@@ -281,17 +268,13 @@ void PmergeMe::sortDeque() {
     sortEachPair(pairs);
     sortPairs(pairs);
     std::deque<int> mainChain;
-    std::deque<int> pend;
+    std::deque<std::pair<int, int> > pend;
     buildChains(pairs, mainChain, pend);
     size_t max = pend.size();
-    std::deque<size_t> order = buildInsertionOrder_forDeque(max);
+    std::vector<size_t> order = buildInsertionOrder(max);
     for (size_t i = 0; i < order.size(); i++) {
-        binaryInsert(mainChain, pend[order[i]]);
+        binaryInsert(mainChain, pend[order[i]].first, pend[order[i]].second);
     }
     if (hasStraggler)
         binaryInsert(mainChain, straggler);
-    for (size_t i = 0; i < mainChain.size(); i++)
-    {
-        std::cout << "--> "<< mainChain[i] << std::endl;
-    }
 }

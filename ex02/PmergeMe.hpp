@@ -9,6 +9,8 @@
 #include <limits>
 #include <algorithm>
 #include <iostream>
+#include <ctime>
+#include <iomanip>
 
 class PmergeMe
 {
@@ -22,7 +24,7 @@ class PmergeMe
     public:
         /* ---------Vector-------- */
         void parse(char **av);
-        void sortVector();
+        std::vector<int> sortVector();
         std::vector<std::pair<int, int> > 
         makePairs(bool &hasStraggler, int &straggler);
         void sortEachPair(std::vector<std::pair<int, int> > &pair);
@@ -32,10 +34,12 @@ class PmergeMe
                     std::vector<std::pair<int, int> > &pairs);
         void buildChains(const std::vector<std::pair<int,int> > &pairs,
                                     std::vector<int> &mainChain,
-                                    std::vector<int> &pend);
+                                    std::vector<std::pair<int, int> > &pend);
         std::vector<size_t> jacobsthalNumbers(size_t max);
         std::vector<size_t> buildInsertionOrder(size_t pendSize);
+        void binaryInsert(std::vector<int> &mainChain, int value, int limit);
         void binaryInsert(std::vector<int> &mainChain, int value);
+        void printOriginal();
         /* ---------Deque-------- */
         void sortDeque();
         std::deque<std::pair<int, int> > 
@@ -47,9 +51,8 @@ class PmergeMe
                     std::deque<std::pair<int, int> > &pairs);
         void buildChains(const std::deque<std::pair<int,int> > &pairs,
                                     std::deque<int> &mainChain,
-                                    std::deque<int> &pend);
-        std::deque<size_t> jacobsthalNumbers_forDeque(size_t max);
-        std::deque<size_t> buildInsertionOrder_forDeque(size_t pendSize);
+                                    std::deque<std::pair<int,int> > &pend);
+        void binaryInsert(std::deque<int> &mainChain, int value, int limit);
         void binaryInsert(std::deque<int> &mainChain, int value);
 };
 
