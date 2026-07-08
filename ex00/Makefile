@@ -1,5 +1,5 @@
 CC = c++
-CFLAGS = -Wall -Wextra -Werror -std=c++98
+CFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address
 NAME = btc
 SRCS = main.cpp BitcoinExchange.cpp
 HEADRS = BitcoinExchange.hpp

@@ -54,6 +54,8 @@ double BitcoinExchange::getRate(const std::string &data) {
         return it->second;
     if (it != database.begin())
         --it;
+    if (it == database.begin())
+        throw std::runtime_error("Error : bad Input");
     return it->second;
 }
 
@@ -129,7 +131,7 @@ void BitcoinExchange::processInput(const std::string& filename) {
         }
     
         if (amount > 1000) {
-            std::cerr << "Error: too large a number." << std::endl;
+            std::cerr << "Error: too large number." << std::endl;
             continue;
         }
 
