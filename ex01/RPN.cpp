@@ -28,13 +28,13 @@ void RPN::calculate(const std::string &expression) {
         else if (isOperator(token)) {
             if (stk.size() < 2)
                 throw std::runtime_error("Error");
-            int a = stk.top();
+            long long a = stk.top();
             stk.pop();
-            int b = stk.top();
+            long long b = stk.top();
             stk.pop();
 
         
-            int result;
+            long long  result;
         
             if (token == "+")
                 result = b + a;

@@ -20,14 +20,14 @@ int main(int ac, char **av) {
         clock_t end = clock();
 
         double vecTime =
-            static_cast<double>(end - start) * 1000000.0 / CLOCKS_PER_SEC;
+            static_cast<double>(end - start);
 
         clock_t start2 = clock();
         pMe.sortDeque();
         clock_t end2 = clock();
 
         double deqTime =
-            static_cast<double>(end2 - start2) * 1000000.0 / CLOCKS_PER_SEC;
+            static_cast<double>(end2 - start2);
 
         std::cout << "After: ";
         for (size_t i = 0; i < sortedVec.size(); i++)
