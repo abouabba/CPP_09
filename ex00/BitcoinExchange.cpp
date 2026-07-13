@@ -139,7 +139,14 @@ void BitcoinExchange::processInput(const std::string& filename) {
             std::cerr << "not a valid data ." << std::endl;
             continue;
         }
-        double rate = getRate(data);
-        std::cout << data << " => " << amount << " = " << amount * rate << std::endl;
+        try {
+            double rate = getRate(data);
+            std::cout << data << " => " << amount << " = " << amount * rate << std::endl;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+        
     }
 }

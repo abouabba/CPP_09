@@ -22,8 +22,13 @@ class PmergeMe
         int  stringToInt(const std::string &str) const;
     
     public:
-        /* ---------Vector-------- */
+
+        PmergeMe();
+        PmergeMe(const PmergeMe &other);
+        PmergeMe &operator=(const PmergeMe &other);
+        ~PmergeMe();
         void parse(char **av);
+        /* ---------Vector-------- */
         std::vector<int> sortVector();
         std::vector<std::pair<int, int> > 
         makePairs(bool &hasStraggler, int &straggler);

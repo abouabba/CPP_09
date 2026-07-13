@@ -1,5 +1,20 @@
 # include "PmergeMe.hpp"
 
+PmergeMe::PmergeMe() {}
+PmergeMe::PmergeMe(const PmergeMe &other) {
+    *this = other;
+}
+PmergeMe &PmergeMe::operator=(const PmergeMe &other) {
+    if (this != &other) {
+        vec = other.vec;
+        deq = other.deq;
+    }
+    return *this;
+}
+PmergeMe::~PmergeMe() {}
+
+
+
 int PmergeMe::stringToInt(const std::string &str) const {
     std::stringstream ss(str);
     long value;
