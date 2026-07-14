@@ -143,10 +143,9 @@ void BitcoinExchange::processInput(const std::string& filename) {
             double rate = getRate(data);
             std::cout << data << " => " << amount << " = " << amount * rate << std::endl;
         }
-        catch(const std::exception& e)
+        catch(const std::runtime_error &e)
         {
-            std::cerr << e.what() << '\n';
+            std::cerr << e.what() << std::endl;
         }
-        
     }
 }
